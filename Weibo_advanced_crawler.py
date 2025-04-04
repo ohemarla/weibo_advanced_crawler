@@ -148,8 +148,13 @@ class WeiboAdvancedCrawler:
                         created_at = "-"
                 print(f"微博 {mid} 创建时间: {created_at}")
 
-                pics = card.select('img[src*="sinaimg"]')
-                print(f"微博 {mid} 找到 {len(pics)} 张图片")
+                media_prev = card.select_one('div[node-type="feed_list_media_prev"]')
+                if media_prev:
+                    pics = media_prev.select('img[src*="sinaimg"]')
+                else:
+                    pics = []
+                print(f"微博 {mid} 找到 {len(pics)} 张图片 (从 feed_list_media_prev)")
+
                 if not pics and self.has_pic:
                     print(f"微博 {mid} 无图片，跳过（预期应含图片）")
                     continue
@@ -221,7 +226,7 @@ class WeiboAdvancedCrawler:
             if self.scope and self.scope != "all":
                 base_url += f"&scope={self.scope}"
             if current_start and current_end:
-                base_url += f"×cope=custom:{current_start}:{current_end}"
+                base_url += f"&timescope=custom:{current_start}:{current_end}"
             if self.has_pic:
                 base_url += "&haspic=1"
 
@@ -235,7 +240,31 @@ class WeiboAdvancedCrawler:
             total_pages = self.__get_total_pages(html)
             print(f"当前时间段 {current_start} 至 {current_end} 检测到总页数: {total_pages}")
 
-            # 如果总页数大于49，进行时间段二分并存储
+            # 检查时间段是否为单天（同一天）
+            start_dt = datetime.strptime(current_start, '%Y-%m-%d')
+            end_dt = datetime.strptime(current_end, '%Y-%m-%d')
+            time_diff = (end_dt - start_dt).days
+
+            # 如果时间段为单天（同一天）且总页数超过49，直接爬取50页
+            if time_diff == 0 and total_pages > 49:
+                print(f"时间段为单天，总页数 {total_pages} 超过49，将爬取50页")
+                pages_to_crawl = 50
+                for page in range(1, pages_to_crawl + 1):
+                    try:
+                        url = f"{base_url}&page={page}"
+                        print(f"搜索 URL: {url}")
+                        html = self.__request(url)
+                        if not html:
+                            print(f"第 {page} 页请求失败")
+                            continue
+                        print(f"正在爬取第 {page} 页 {source}，图片将保存至 {base_path}")
+                        self.__parse_weibo(html, source, base_path)
+                    except:
+                        self.__log(f"爬取第 {page} 页失败: {traceback.format_exc()}")
+                        break
+                continue
+
+            # 如果总页数大于49，且时间段超过一天，进行时间段二分
             if total_pages > 49:
                 print(f"总页数 {total_pages} 超过49，正在进行时间段二分...")
                 start = datetime.strptime(current_start, '%Y-%m-%d')
