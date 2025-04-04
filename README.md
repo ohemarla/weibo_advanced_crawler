@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-这是一个用于爬取微博搜索结果的 Python 脚本，支持按关键词、时间范围和原创内容筛选，自动下载微博中的图片并保存相关信息到 CSV 文件。
+这是一个用于爬取微博搜索结果并下载图片的 Python 脚本，支持按关键词、时间范围和原创内容筛选，自动下载微博中的图片并保存相关信息到 CSV 文件。
 
 ## 功能
 
