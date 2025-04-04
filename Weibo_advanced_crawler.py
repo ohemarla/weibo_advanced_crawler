@@ -17,7 +17,7 @@ requests.DEFAULT_RETRIES = 5
 MAX_RETRIES = 3  # 最大重试次数
 RETRY_DELAY = 10  # 重试间隔（秒）
 
-class WeiboWebCrawler:
+class WeiboAdvancedCrawler:
     def __init__(self):
         if not os.path.exists(WEIBO_PIC_PATH):
             os.makedirs(WEIBO_PIC_PATH, exist_ok=True)
@@ -277,6 +277,6 @@ class WeiboWebCrawler:
                     break
 
 if __name__ == "__main__":
-    weibo = WeiboWebCrawler()
+    weibo = WeiboAdvancedCrawler()
     weibo.set_search_params(keywords=["缅甸地震"], start_date="2025-03-28", end_date="2025-04-05", scope="ori", has_pic=True)
     weibo.search(pages=49)
