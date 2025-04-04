@@ -278,5 +278,5 @@ class WeiboWebCrawler:
 
 if __name__ == "__main__":
     weibo = WeiboWebCrawler()
-    weibo.set_search_params(keywords=["夜骑开封"], start_date="2024-06-18", end_date="2024-12-31", scope="ori", has_pic=True)
+    weibo.set_search_params(keywords=["缅甸地震"], start_date="2025-03-28", end_date="2025-04-05", scope="ori", has_pic=True)
     weibo.search(pages=49)
