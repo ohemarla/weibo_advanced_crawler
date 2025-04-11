@@ -15,7 +15,7 @@ WEIBO_PIC_PATH = "./微博图片动态/"
 CSV_PATH = "微博记录.csv"
 requests.DEFAULT_RETRIES = 5
 MAX_RETRIES = 3  # 最大重试次数
-RETRY_DELAY = 10  # 重试间隔（秒）
+RETRY_DELAY = 10  # 重试间隔（秒），可适当调整
 
 class WeiboAdvancedCrawler:
     def __init__(self):
@@ -83,7 +83,7 @@ class WeiboAdvancedCrawler:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
             'Referer': 'https://s.weibo.com/',
-            'Cookie': 'SCF=Ar7jzpx6TRlbgzUGGij9EQJOi4vq0tboMa3qFDKTjYgcGSEzaQ0WWLBV3v6Kw-qAAoW-M3I_QuG9Dp039UKLqAw.; SUB=_2A25K6-xzDeRhGeFH7VoZ8S7Iwz-IHXVpiWG7rDV8PUNbmtANLULMkW9Neou_JiA4h42xf5741fXW0GGbAvr-ePxd; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WFsmxZm62lAyT_90_GupI015NHD95QN1KqR1h27Shn0Ws4DqcjMi--NiK.Xi-2Ri--ciKnRi-zNS0.c1hnpehBRe7tt; ALF=02_1746348323; _s_tentry=passport.weibo.com; Apache=6283768143030.159.1743756326045; SINAGLOBAL=6283768143030.159.1743756326045; ULV=1743756326098:1:1:1:6283768143030.159.1743756326045:; WBPSESS=P16UVdooRyDTzmbj2KHwQv1nAugUJryGPZxDCAI06XWaP09TOgrSjtFJ9dc7LESv7zyFRLmm5M17ubi-zgEbiKTuMcNumMVmSWW4DHc6kSRY9zWOCwNn_iZDdbHn-jExMbL5BzS6Qbj6xYI0U2xJhg=='
+            'Cookie': '填写微博cookie'
         }
         for attempt in range(MAX_RETRIES + 1):
             try:
@@ -307,5 +307,5 @@ class WeiboAdvancedCrawler:
 
 if __name__ == "__main__":
     weibo = WeiboAdvancedCrawler()
-    weibo.set_search_params(keywords=["缅甸地震"], start_date="2025-03-28", end_date="2025-04-05", scope="ori", has_pic=True)
+    weibo.set_search_params(keywords=["缅甸地震"], start_date="2025-03-28", end_date="2025-04-05", scope="ori", has_pic=True)    #ori指原创微博，has_pic指微博是否包含图片
     weibo.search(pages=49)
